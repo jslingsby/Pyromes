@@ -15,10 +15,15 @@
 ##############################################################################
 ###1) Get libraries and setwd
 ##############################################################################
+
+# set wd
+if (Sys.getenv("USER")=='jasper') {setwd("/Users/jasper/Dropbox/Shared/Pyromes")} #setwd("/Users/jasper/Dropbox/SAEON/Projects/Matt_Restios/") 
+if (Sys.getenv("USERNAME")=='nikki') {setwd("C:/Users/nikki/Dropbox/Pyromes");.libPaths("C:/Users/nikki/R_libraries")}
+#if (Sys.getenv("USERNAME")=='WINDOZE PC') {datwd=""; giswd=""}
+
 # installing/loading the package:
 
 # step by step functions:
-.libPaths("C:/Users/nikki/R_libraries")
 library(maptools)
 library(raster) 
 library(rgdal)
@@ -31,10 +36,6 @@ library(shapefiles)
 library(GISTools)
 require(PBSmapping)
 
-
-if (Sys.getenv("USER")=='jasper') {setwd("/Users/jasper/Dropbox/Shared/Pyromes")} #setwd("/Users/jasper/Dropbox/SAEON/Projects/Matt_Restios/") 
-if (Sys.getenv("USERNAME")=='nikki') {setwd("C:/Users/nikki/Dropbox/Pyromes")}
-#if (Sys.getenv("USERNAME")=='WINDOZE PC') {datwd=""; giswd=""}
 
 ##############################################################################
 ###2) Read in spatial data using RGdal command which includes the projection files
