@@ -114,6 +114,7 @@ r1 <- raster(ext=extent(dat), res=1000, crs=CRS("+proj=utm +zone=34 +south +datu
 r5 = aggregate(r1, 5)
 r10 = aggregate(r1, 10)
 r25 = aggregate(r1, 25)
+r100 = aggregate(r1, 100)
 
 ##############################################################################
 ###5) VARIABLE1: Get fire count by cell
@@ -124,6 +125,12 @@ r25 = aggregate(r1, 25)
 #rdat5_1 <- rasterize(dat,r5, dat$ID, fun="count")
 #rdat10_1 <- rasterize(dat,r10, dat$ID, fun="count")
 rdat25_1 <- rasterize(dat,r25, dat$ID, fun="count")
+
+
+# writeRaster(rdat1_1, filename='clean_raster/rdat1_1.grd', overwrite=TRUE)
+# writeRaster(rdat5_1, filename='clean_raster/rdat5_1.grd', overwrite=TRUE)
+# writeRaster(rdat10_1, filename='clean_raster/rdat10_1.grd', overwrite=TRUE)
+writeRaster(rdat25_1, filename='clean_raster/rdat25_1.grd', overwrite=TRUE)   
 
 ###Code to stack and extract to dataframe
 #x=stack(rdat10, rdat10, rdat10) 
@@ -139,6 +146,13 @@ rdat25_1 <- rasterize(dat,r25, dat$ID, fun="count")
 #rdat10_2 <- rasterize(dat,r10, dat$AREA_KM, fun="mean")
 rdat25_2 <- rasterize(dat,r25, dat$AREA_KM, fun="mean")
 
+
+# writeRaster(rdat1_2, filename='clean_raster/rdat1_2.grd', overwrite=TRUE)
+# writeRaster(rdat5_2, filename='clean_raster/rdat5_2.grd', overwrite=TRUE)
+# writeRaster(rdat10_2, filename='clean_raster/rdat2_1.grd', overwrite=TRUE)
+writeRaster(rdat25_2, filename='clean_raster/rdat25_2.grd', overwrite=TRUE)   
+
+
 ##############################################################################
 ###7) VARIABLE3: MEAN, MAX, MIN % area burnt per grid cell
 ##############################################################################
@@ -148,6 +162,7 @@ rdat25_2 <- rasterize(dat,r25, dat$AREA_KM, fun="mean")
 #r5sp=rasterToPolygons(r5)
 #r10sp=rasterToPolygons(r10)
 r25sp=rasterToPolygons(r25)
+r100sp=rasterToPolygons(r100)
 
 ###Fix dat to get around weird errors...
 gdat=gBuffer(dat,byid=TRUE,width=0)
@@ -158,26 +173,127 @@ gdat=gBuffer(dat,byid=TRUE,width=0)
 #x$AREA_KM=sapply(sapply(slot(x, "polygons"), function(x) sapply(slot(x,"Polygons"), slot, "area")), sum)/1000000
 #y=as(x,"SpatialLinesDataFrame")
 #rdat1_3 = rasterize(y, r1, "AREA_KM", fun=mean)*100
+#rdat1_4 = rasterize(y, r1, "AREA_KM", fun=median)*100
+#rdat1_5 = rasterize(y, r1, "AREA_KM", fun=max)*100
+# writeRaster(rdat1_3, filename='clean_raster/rdat1_3.grd', overwrite=TRUE)
+# writeRaster(rdat1_4, filename='clean_raster/rdat1_4.grd', overwrite=TRUE)
+# writeRaster(rdat1_5, filename='clean_raster/rdat1_5.grd', overwrite=TRUE)
+
 ###ADD RASTERIZES FOR MAX MIN MEDIAN ETC...
 
 #x=gIntersection(r5sp, gdat, byid = TRUE)
 #x$AREA_KM=sapply(sapply(slot(x, "polygons"), function(x) sapply(slot(x,"Polygons"), slot, "area")), sum)/1000000
 #y=as(x,"SpatialLinesDataFrame")
 #rdat5_3 = (rasterize(y, r5, "AREA_KM", fun=mean)/25)*100
+#rdat5_4 = rasterize(y, r5, "AREA_KM", fun=median)*100
+#rdat5_5 = rasterize(y, r5, "AREA_KM", fun=max)*100
+# writeRaster(rdat5_3, filename='clean_raster/rdat5_3.grd', overwrite=TRUE)
+# writeRaster(rdat5_4, filename='clean_raster/rdat5_4.grd', overwrite=TRUE)
+# writeRaster(rdat5_5, filename='clean_raster/rdat5_5.grd', overwrite=TRUE)
+
 
 #x=gIntersection(r10sp, gdat, byid = TRUE)
 #x$AREA_KM=sapply(sapply(slot(x, "polygons"), function(x) sapply(slot(x,"Polygons"), slot, "area")), sum)/1000000
 #y=as(x,"SpatialLinesDataFrame")
 #rdat10_3 = rasterize(y, r10, "AREA_KM", fun=mean) #in km, which happens to be % too
+#rdat10_4 = rasterize(y, r10, "AREA_KM", fun=median)*100
+#rdat10_5 = rasterize(y, r10, "AREA_KM", fun=max)*100
+# writeRaster(rdat10_3, filename='clean_raster/rdat10_3.grd', overwrite=TRUE)
+# writeRaster(rdat10_4, filename='clean_raster/rdat10_4.grd', overwrite=TRUE)
+# writeRaster(rdat10_5, filename='clean_raster/rdat10_5.grd', overwrite=TRUE)
 
 x=gIntersection(r25sp, gdat, byid = TRUE)
 x$AREA_KM=sapply(sapply(slot(x, "polygons"), function(x) sapply(slot(x,"Polygons"), slot, "area")), sum)/1000000
 y=as(x,"SpatialLinesDataFrame")
 rdat25_3 = (rasterize(y, r25, "AREA_KM", fun=mean)/625)*100
+#rdat25_4 = rasterize(y, r25, "AREA_KM", fun=median)*100
+#rdat25_5 = rasterize(y, r25, "AREA_KM", fun=max)*100
+writeRaster(rdat25_3, filename='clean_raster/rdat25_3.grd', overwrite=TRUE)
+# writeRaster(rdat25_4, filename='clean_raster/rdat25_4.grd', overwrite=TRUE)
+# writeRaster(rdat25_5, filename='clean_raster/rdat2 5_5.grd', overwrite=TRUE)
+
+# x=gIntersection(r100sp, gdat, byid = TRUE)
+# x$AREA_KM=sapply(sapply(slot(x, "polygons"), function(x) sapply(slot(x,"Polygons"), slot, "area")), sum)/1000000
+# y=as(x,"SpatialLinesDataFrame")
+# rdat25_3 = (rasterize(y, r100, "AREA_KM", fun=mean)/10000)*100
+#rdat25_4 = rasterize(y, r25, "AREA_KM", fun=median)*100
+#rdat25_5 = rasterize(y, r25, "AREA_KM", fun=max)*100
+# writeRaster(rdat25_3, filename='clean_raster/rdat25_3.grd', overwrite=TRUE)
+# writeRaster(rdat25_4, filename='clean_raster/rdat25_4.grd', overwrite=TRUE)
+# writeRaster(rdat25_5, filename='clean_raster/rdat2 5_5.grd', overwrite=TRUE)
 
 
 ##############################################################################
 ##############################################################################
+rdatyear = rasterize(dat, r25)
+a=stack(rdatyear,dat)
+
+
+
+"rainperc.s" <- function(dat = dat, perc = 30, userainyear = T){
+  ## code for working out the number of months containing less than 30 % of the rainfall - index of length of the dry season
+  ### modified from Russell-Smith et al 2007 and used in Archibald et al 2008
+  ### perc variable is the percentage of the annual rainfall that is allowed to fall in the dry season. Did a sensitivity analysis of this and 30 seems reasonable 
+  ### input data format: yearmonth, rainval
+  ### first work out rainyear
+  year <- as.numeric(dat$YEAR)
+month <- (dat$MONTH - year)*13
+rainyear <- year
+rainyear[month < 7] <- year[month <7] -1
+rainmonth <- dat$MONTH
+rainmonth[month < 7] <- rainmonth[month < 7] + 6
+rainmonth[month >= 7] <- rainmonth[month >=7] -6
+
+if(userainyear == T){
+  year <- rainyear
+  month <- rainmonth
+}
+
+#for each rainyear, work out rainfall concentration as the sum of 12 vectors (r, thetha), where r is the magnitude of the vector and theta is the angle (expressed in units of arc)
+# for a circle of radius r (monthly rainfall) the circumference is 2pi*r, which, divided by 12 gives you s s = 2pi*r/12... thetha is s/r so theta is (2pi*r/12)/r = pi/6
+yearcount <- unique(year)
+count <- rep(0, length(yearcount))
+skip <- rep(0, length(yearcount))
+AnnPPT <- tapply(dat[,2], year, sum)
+for(i in 1:length(yearcount)){        
+  o <- order(dat[year == yearcount[i], 2], decreasing = F)
+  temp <- dat[year == yearcount[i],2]                   # get the data to work with
+  months <- month[rainyear == yearcount[i]]           # get the months that apply to this data
+  temp <- temp[o]                                     # sort them 
+  months <- month[o]        
+  if(length(temp[!is.na(temp)]) == 12){                               # if there is a full rainyear of data to work with
+    test <- 0                                          # create an accumulator variable
+    while (test <= (perc/100)*sum(temp)) {             # check whether it exceeds the percentage specified rain
+      count[i] <- count[i] + 1          
+      test <- test + temp[count[i]]                  # acucmluate the rain for this month
+    }                        
+    months <- months[1:count[i]]                    # take the months that contain the dry season values
+    if(length(months) > 1){                                 # if there are two or more months of dry season 
+      for(j in length(months):2){                 
+        if(months[j] - months[j-1] > 1) skip[i] <- skip[i] + 1     # count the number of times that the months got skipped
+      }
+    }
+  }
+  if(length(temp[!is.na(temp)]) < 12){
+    count[i] <- NA
+    skip[i] <- NA
+  }                   
+}
+rainperc <- count/12*100
+rainperc <- cbind(yearcount, round(AnnPPT,0), round(rainperc,0), skip)
+if(userainyear == T) dimnames(rainperc)[[2]] <- c("rainyear", "AnnRain", "rainperc", "skipmonths")
+if(userainyear == F) dimnames(rainperc)[[2]] <- c("year", "AnnRain_calendaryear", "rainperc", "skipmonths")
+rainperc <- data.frame(rainperc)
+rainperc
+}
+rdatyear@data
+
+
+
+
+
+
+
 ##############################################################################
 
 ###Useful functions
